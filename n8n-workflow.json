@@ -1,0 +1,23 @@
+{
+  "name": "Solicitudes soporte - registro y notificacion",
+  "nodes": [
+    {
+      "parameters": {"pollTimes": {"item": [{"mode": "everyMinute"}]}, "documentId": {"__rl": true, "value": "REEMPLAZAR_ID_SPREADSHEET", "mode": "id"}, "sheetName": {"__rl": true, "value": "Respuestas de formulario 1", "mode": "name"}, "options": {}},
+      "id": "0c118f29-79a7-4f08-8e4e-412309825c74", "name": "Nueva respuesta de Google Sheets", "type": "n8n-nodes-base.googleSheetsTrigger", "typeVersion": 1, "position": [260, 300], "credentials": {"googleSheetsTriggerOAuth2Api": {"id": "", "name": "Conectar Google Sheets"}}
+    },
+    {
+      "parameters": {"method": "POST", "url": "https://REEMPLAZAR-SERVICIO.onrender.com/api/solicitudes", "sendHeaders": true, "headerParameters": {"parameters": [{"name": "X-API-Key", "value": "={{ $env.N8N_API_TOKEN }}"}, {"name": "Content-Type", "value": "application/json"}]}, "sendBody": true, "specifyBody": "json", "jsonBody": "={{ { nombre: $json['Nombre completo'], correo: $json['Correo electronico'], categoria: $json['Categoría'], prioridad: $json['Prioridad'], descripcion: $json['Descripción del Problema'] } }}", "options": {}},
+      "id": "a538cd18-2aa6-40be-b1e0-1e20895678c1", "name": "Registrar en API", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [520, 300]
+    },
+    {
+      "parameters": {"sendTo": "={{ $('Nueva respuesta de Google Sheets').item.json['Correo electronico'] }}", "subject": "=Solicitud recibida: {{ $json.folio }}", "emailType": "text", "message": "=Hola {{ $('Nueva respuesta de Google Sheets').item.json['Nombre completo'] }}, recibimos tu solicitud de soporte. Tu folio es {{ $json.folio }}. Prioridad: {{ $json.prioridad }}. Estado: {{ $json.estado }}.", "options": {}},
+      "id": "bebc6a58-e132-4090-8d15-a23335dceaf7", "name": "Enviar confirmacion Gmail", "type": "n8n-nodes-base.gmail", "typeVersion": 2.1, "position": [780, 300], "credentials": {"gmailOAuth2": {"id": "", "name": "Conectar Gmail"}}
+    }
+  ],
+  "pinData": {},
+  "connections": {"Nueva respuesta de Google Sheets": {"main": [[{"node": "Registrar en API", "type": "main", "index": 0}]]}, "Registrar en API": {"main": [[{"node": "Enviar confirmacion Gmail", "type": "main", "index": 0}]]}},
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": ""
+}
+

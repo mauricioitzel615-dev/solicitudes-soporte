@@ -1,0 +1,15 @@
+Metrica,Valor
+Total de solicitudes,"=COUNTA('Respuestas de formulario 1'!A2:A)"
+
+Solicitudes por categoria,Cantidad
+Hardware,"=COUNTIF('Respuestas de formulario 1'!D:D,A5)"
+Software,"=COUNTIF('Respuestas de formulario 1'!D:D,A6)"
+Red,"=COUNTIF('Respuestas de formulario 1'!D:D,A7)"
+Accesos,"=COUNTIF('Respuestas de formulario 1'!D:D,A8)"
+Otro,"=COUNTIF('Respuestas de formulario 1'!D:D,A9)"
+
+Solicitudes por prioridad,Cantidad
+Baja,"=COUNTIF('Respuestas de formulario 1'!E:E,A12)"
+Media,"=COUNTIF('Respuestas de formulario 1'!E:E,A13)"
+Alta,"=COUNTIF('Respuestas de formulario 1'!E:E,A14)"
+Urgente,"=COUNTIF('Respuestas de formulario 1'!E:E,A15)"
